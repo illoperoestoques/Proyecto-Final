@@ -14,42 +14,42 @@
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa4" layoutX="104.0" layoutY="209.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="4">
+      <Button fx:id="mesa4" layoutX="104.0" layoutY="209.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="4">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa7" layoutX="104.0" layoutY="384.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="7">
+      <Button fx:id="mesa7" layoutX="104.0" layoutY="384.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="7">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa2" layoutX="355.0" layoutY="51.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="2">
+      <Button fx:id="mesa2" layoutX="355.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="2">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa5" layoutX="355.0" layoutY="209.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="5">
+      <Button fx:id="mesa5" layoutX="355.0" layoutY="209.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="5">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa8" layoutX="355.0" layoutY="384.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="8">
+      <Button fx:id="mesa8" layoutX="355.0" layoutY="384.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="8">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa9" layoutX="597.0" layoutY="384.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="9">
+      <Button fx:id="mesa9" layoutX="597.0" layoutY="384.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="9">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa6" layoutX="597.0" layoutY="209.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="6">
+      <Button fx:id="mesa6" layoutX="597.0" layoutY="209.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="6">
          <font>
             <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="mesa3" layoutX="597.0" layoutY="51.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="91.0" text="3">
+      <Button fx:id="mesa3" layoutX="597.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#sMesa" prefHeight="77.0" prefWidth="91.0" text="3">
          <font>
             <Font size="27.0" />
          </font>

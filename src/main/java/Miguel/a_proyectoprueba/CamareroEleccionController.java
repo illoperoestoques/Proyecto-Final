@@ -9,11 +9,12 @@ import Model.P_Articulo;
 import Model.Pedido;
 import ModelDao.P_ArticuloDao;
 import ModelDao.PedidoDao;
+import interfaces.ICamareroEleccionController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-public class CamareroEleccionController implements Initializable {
+public class CamareroEleccionController implements Initializable, ICamareroEleccionController {
 	private static int mesa;
 	
 	@FXML
@@ -24,12 +25,22 @@ public class CamareroEleccionController implements Initializable {
 	private Button modificarP;
 	@FXML
 	private Button PagarC;
+	
+	
+	@FXML
+	private Button back;
+	
+	
+	@FXML
+	public void switchToBack() throws IOException {
+		App.setRoot("mesas");
+	}
 
 	/**
 	 * Cuando se hace click en tomarN se crea o se escoge un pedido y se cambia de vista a menu
 	 */
 	@FXML
-	private void switchToMenu() throws IOException {
+	public void switchToMenu() throws IOException {
 		//se obtiene el id del ultimo pedido de la mesa escogida
 		int id = PedidoDao.getLastId(mesa);
 		//si el estado del uno los P_articulo no esta acabado devuelve false
@@ -49,7 +60,7 @@ public class CamareroEleccionController implements Initializable {
 	 * Si se clika eliminaP se cambia de vista
 	 */
 	@FXML
-	private void switchToEliminaPedido() throws IOException {
+	public void switchToEliminaPedido() throws IOException {
 		//se obtiene el id del ultimo pedido
 		int id = PedidoDao.getLastId(mesa);
 		//si el estado del uno los P_articulo no esta acabado devuelve false
@@ -65,7 +76,7 @@ public class CamareroEleccionController implements Initializable {
 	
 	//se cambia de vista a Pagar Cuenta cunado clika PagarC
 	@FXML
-	private void switchToPagarCuenta() throws IOException {
+	public void switchToPagarCuenta() throws IOException {
 		int id = PedidoDao.getLastId(mesa);
 		boolean finish = P_ArticuloDao.EstadoFinish(id);
 		//si uno de los P_Articulos no ha acabado se pasa el pedido al controlador de ElegirAlimento
@@ -78,7 +89,7 @@ public class CamareroEleccionController implements Initializable {
 	
 	//se cambia de vista a modificaPedido cuando se clika modificaP
 	@FXML
-	private void switchToModificaPedido() throws IOException {
+	public void switchToModificaPedido() throws IOException {
 		int id = PedidoDao.getLastId(mesa);
 		boolean finish = P_ArticuloDao.EstadoFinish(id);
 		//si uno de los P_Articulos no ha acabado se pasa el pedido al controlador de ElegirAlimento
@@ -94,17 +105,14 @@ public class CamareroEleccionController implements Initializable {
 		mesa = me;
 	}
 	
-	//cambia de vista a infoPedido
-	public static String infoPedido() {
+	//obtiene todos los P_Articulo asociados al pedido 
+	public static ArrayList<P_Articulo> infoPedido() {
 		//se obtiene el pedido 
 		Pedido pedido = ElegirAlimentoController.getPedido();
 		//Se obtiene un Arraylis de todos los P_Articulos del pedido anterior
 		ArrayList<P_Articulo> pedidos = P_ArticuloDao.get(pedido);
-		//se obtien un string de todos los P_Articulos que habia en Pedidos
-		String info = P_Articulo.ArraytoString(pedidos);
-		//se devuelve el string
-		return info;
-
+		return pedidos;
+		
 	}
 	//obtiene el precio de un pedido
 	public static int infoPrecio() {

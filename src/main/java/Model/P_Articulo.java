@@ -7,25 +7,30 @@ public class P_Articulo {
 	private Pedido pedido;
 	private Articulo articulo;
 	private int cantidad;
-	private int estado;
+	private String estado;
+	private Empleado empleado;
 
-	//constructor con atricutos 
-	public P_Articulo(Pedido pedidido, Articulo articulo, int cantidad, int estado) {
-		super();
-		this.pedido = pedidido;
+	
+
+	public P_Articulo(Pedido pedido, Articulo articulo, int cantidad, String estado, Empleado empleado) {
+		this.pedido = pedido;
 		this.articulo = articulo;
 		this.cantidad = cantidad;
 		this.estado = estado;
+		this.empleado = empleado;
 	}
 	
-	//contructor por defecto
+	
+
 	public P_Articulo() {
-		super();
-		this.pedido = new Pedido();
-		this.articulo = new Articulo();
+		this.pedido = null;
+		this.articulo = null;
 		this.cantidad = 0;
-		this.estado = 0;
+		this.estado =  "nada";
+		this.empleado = null;
 	}
+
+
 
 	public Pedido getPedidido() {
 		return pedido;
@@ -51,17 +56,46 @@ public class P_Articulo {
 		this.cantidad = cantidad;
 	}
 
-	public int isEstado() {
+	
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+
+
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(int estado) {
+
+
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
+
+
+	public Empleado getEmpleado() {
+		return this.empleado;
+	}
+	
+	public void setEmpleado(Empleado empleado) {
+		this.empleado=empleado;
+	}
+	
+	
+
 	@Override
 	public String toString() {
-		return pedido + ", " + articulo + ", cantidad=" + cantidad;
+		return "P_Articulo [pedido=" + pedido + ", articulo=" + articulo + ", cantidad=" + cantidad + ", estado="
+				+ estado + ", empleado=" + empleado + "]";
 	}
 
 	/**
@@ -82,21 +116,8 @@ public class P_Articulo {
 		}
 		return false;
 	}
-	/**
-	 * devuelve un string de un Arraylist de P_Articulos
-	 * @param p_art ArrayList que vaa recorrer 
-	 * @return string de los P_articulos 
-	 */
-	public static String ArraytoString(ArrayList<P_Articulo> p_art) {
-		String total = "";
-		for (P_Articulo a : p_art) {
-			//obtiene un string del P_Articulo
-			String par = a.toString();
-			//se acumulan todos los strings 
-			total = total + par + "\n";
-		}
-		return total;
-	}
+
+	
 	
 	/**
 	 * suma el precion de todos los P_Articuls de todos los articulos 

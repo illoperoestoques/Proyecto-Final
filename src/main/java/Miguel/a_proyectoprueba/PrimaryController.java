@@ -4,24 +4,29 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Model.Camarero;
+import Model.Cocinero;
 import Model.Empleado;
 import ModelDao.EmpleadoDao;
+import interfaces.IPrimaryController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-public class PrimaryController implements Initializable {
-	EmpleadoDao eDao = new EmpleadoDao();
+public class PrimaryController implements Initializable, IPrimaryController {
+	private EmpleadoDao eDao = new EmpleadoDao();
+	private static Empleado empleadoLogin;
 
 	@FXML
 	private ImageView button;
 	@FXML
 	private TextField user;
 	@FXML
-	private TextField password;
+	private PasswordField password;
 	@FXML
 	private ImageView buttonExit;
 	@FXML
@@ -29,7 +34,7 @@ public class PrimaryController implements Initializable {
 
 	//verificael usuario en la bd y si es correcto lo cambia a una vista
 	@FXML
-	private void logIn() throws IOException {
+	public void logIn() throws IOException {
 		//se obtiene el usuario y contraseña
 		String usuario = user.getText();
 		String pass = password.getText();
@@ -44,17 +49,27 @@ public class PrimaryController implements Initializable {
 			String trabajo = e.getTrabajo();
 			//si el trabajo es camarero la vista cambia a mesas
 			if (trabajo.equals("camarero")) {
+				empleadoLogin= new Camarero(usuario, pass);
 				App.setRoot("mesas");
-			} else if (e.getTrabajo() == "cocinero") {
-
+			} else if (e.getTrabajo().equals("cocinero")) {
+				empleadoLogin= new Cocinero(usuario, pass);
+				App.setRoot("cocineroPedidos");
+			}else if(e.getTrabajo().equals("admin")) {
+				App.setRoot("root");
 			}
+		
 		}
 
 	}
-
+	
+	//salir del programa
 	@FXML
 	public void exit() {
 		handle();
+	}
+	//Obtiene el emplado que a iniciado secion
+	public static Empleado getEmpleado() {
+		return empleadoLogin;
 	}
 
 	@Override

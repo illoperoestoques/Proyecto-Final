@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Miguel.a_proyectoprueba.PrimaryController;
 import Model.Articulo;
+import Model.Empleado;
 import Model.P_Articulo;
 import Model.Pedido;
 import Utils.Connect;
@@ -22,15 +24,18 @@ public class P_ArticuloDao {
 		Connection miconexion = Connect.getConnection();
 		//boolean a devolver
 		boolean result = false;
+		
+		String usuario = PrimaryController.getEmpleado().getUser();
 		//sentencia sql
-		String sql = "INSERT INTO p_articulo (id_p,id_a,cantidad,estado) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO p_articulo (id_p,id_a,cantidad,estado,user_emp) VALUES (?,?,?,?,?)";
 		try {
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
 			//se insertan los datos en la sentencis sql
 			sentencia.setInt(1, ob.getPedidido().getId());
 			sentencia.setInt(2, ob.getArticulo().getId());
 			sentencia.setInt(3, ob.getCantidad());
-			sentencia.setInt(4, ob.isEstado());
+			sentencia.setString(4, ob.getEstado());
+			sentencia.setString(5, ob.getEmpleado().getUser());
 			sentencia.executeUpdate();
 			//si despues de actualizar no habido fallo el result es true y significa que 
 			//todo ha ido correcto 
@@ -53,7 +58,7 @@ public class P_ArticuloDao {
 		//se obtiene el id del pedido
 		int idp = pedido.getId();
 		//sentenia sql
-		String sql = "SELECT id_a,cantidad,estado FROM p_articulo WHERE id_p=?";
+		String sql = "SELECT id_a,cantidad,estado,user_emp FROM p_articulo WHERE id_p=?";
 
 		try {
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
@@ -67,9 +72,12 @@ public class P_ArticuloDao {
 				int id_a = miRs.getInt("id_a");
 				Articulo art_aux = ArticuloDao.get(id_a);
 				int cant_aux = miRs.getInt("cantidad");
-				int est_aux = miRs.getInt("estado");
+				String est_aux = miRs.getString("estado");
+				String nombre_user = miRs.getString("user_emp");
+				EmpleadoDao edao= new EmpleadoDao();
+				Empleado user = edao.get(nombre_user);
 				//se crea el P_Articulo
-				P_Articulo auxi = new P_Articulo(pedido, art_aux, cant_aux, est_aux);
+				P_Articulo auxi = new P_Articulo(pedido, art_aux, cant_aux, est_aux,user);
 				//se añade al arraylist
 				a.add(auxi);
 			}
@@ -116,7 +124,7 @@ public class P_ArticuloDao {
 	 */
 	public static boolean EstadoFinish(int id_pedido) {
 		Connection miconexion = Connect.getConnection();
-		String sql = "SELECT id_p FROM p_articulo WHERE id_p=? and estado=0 limit 1 ";
+		String sql = "SELECT id_p FROM p_articulo WHERE id_p = ? and estado IN('no entregado','preparado','entregado') limit 1;";
 		int noUse = -1;
 		try {
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
@@ -156,8 +164,114 @@ public class P_ArticuloDao {
 		} 
 
 	}
+	/**
+	 * pone el estado a pagado a todos los p_Articulos con el id del  pedido pasado 
+	 * @param pedido es el pedido asociado a todos los p_Articuos que se quieren actualizar a pagado
+	 */
+	public static void pagarPedido(Pedido pedido) {
+		Connection miconexion = Connect.getConnection();
+		//se obtiene el id del pedido que se quiere pagar
+		int id = pedido.getId();
+		String sql = "UPDATE `p_articulo` SET `estado` = 'pagado'WHERE `p_articulo`.`id_p` = ?";
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			// se pasa el id a la sentencia 
+			sentencia.setInt(1, id);
+			//se actualiza
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+		
+	}
 	
+	/**
+	 * actualiza un P_Articulo 
+	 * @param pedido P_Articulo con los nuevos valores a actualizar 
+	 */
+	public static void updateP_Articulo(P_Articulo pedido) {
+		Connection miconexion = Connect.getConnection();
+		//sentencia sql
+		String sql = "UPDATE p_articulo SET cantidad = ?, estado = ? where id_p=? and id_a=? ";
+
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			//se insertan los valores valores 
+			sentencia.setInt(1, pedido.getCantidad());
+			sentencia.setString(2, pedido.getEstado());
+			sentencia.setInt(3, pedido.getPedidido().getId());
+			sentencia.setInt(4, pedido.getArticulo().getId());
+			//se actualiza
+			
+			sentencia.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+	}
 	
+	/**
+	 * elimina el P_Articulo a eliminar 
+	 * @param auxP_Articulo a eliminar
+	 */
+	public static void eliminaP_Articulo(P_Articulo aux) {
+		Connection miconexion = Connect.getConnection();
+		//se obtiene el id del pedido a eliminar
+		String sql = "DELETE FROM p_articulo where id_p=? and id_a=?";
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			// se pasa el id a la sentencia 
+			sentencia.setInt(1, aux.getPedidido().getId());
+			sentencia.setInt(2, aux.getArticulo().getId());
+			//se actualiza
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+
+	}
+	
+	/**
+	 * Obtiene todos los P_Articulos que su estad sea "no entregado" , que sean una comida para los cocineros
+	 * @param aux Pedido con id asociado a los P_Articulos
+	 * @return Arraylist con los P_Articulo seleccionados
+	 */
+	public static ArrayList<P_Articulo> P_ArticuloCocina(Pedido aux){
+		Connection miconexion = Connect.getConnection();
+		ArrayList<P_Articulo> a = null;
+		//se obtiene el id del pedido
+		//sentenia sql
+		String sql = "SELECT pa.id_a, pa.id_p, pa.cantidad, pa.estado from p_articulo pa, articulos ar where id_p = ? and pa.estado = 'no entregado' and ar.tipo=1 and pa.id_a = ar.id;";
+
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			sentencia.setInt(1, aux.getId());
+			ResultSet miRs = sentencia.executeQuery();
+			a = new ArrayList<P_Articulo>();
+			//mientras tenga resguistros la consulta se añadiran P_Articulos
+			while (miRs.next()) {
+				P_Articulo auxi = new P_Articulo();
+				//se obtiene los datos 
+				int id_a = miRs.getInt(1);
+				int id_p = miRs.getInt(2);
+				int cantidad = miRs.getInt(3);
+				String estado = miRs.getString(4);
+				
+				auxi.setPedidido(PedidoDao.get(id_p));
+				auxi.setArticulo(ArticuloDao.get(id_a));
+				auxi.setCantidad(cantidad);
+				auxi.setEstado(estado);
+				//se crea el P_Articulo
+				
+				//se añade al arraylist
+				a.add(auxi);
+			}
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+		return a;
+	}
 	
 
 }

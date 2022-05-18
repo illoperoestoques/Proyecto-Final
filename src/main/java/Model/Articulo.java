@@ -1,6 +1,8 @@
 package Model;
 
-public class Articulo {
+import interfaces.IArticulo;
+
+public class Articulo implements IArticulo {
 	private int id;
 	private String nombre;
 	private int precio;
@@ -54,9 +56,10 @@ public class Articulo {
 		this.tipo = tipo;
 	}
 
+	
 	@Override
 	public String toString() {
-		return nombre + ", precio=" + precio;
+		return "Articulo [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + "]";
 	}
 	//compara dos articulos por su nombre
 	@Override

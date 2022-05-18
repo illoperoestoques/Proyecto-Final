@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import Model.Articulo;
+import Model.Empleado;
+import Model.P_Articulo;
 import Model.Pedido;
 import Utils.Connect;
 
@@ -121,6 +125,38 @@ public class PedidoDao {
 			// TODO: handle exception
 		} 
 
+	}
+	
+	/**
+	 * Obtien un Arraylist con todos los pedidos que tengaun articulo que sea una comida y su estado sea "no entregado"
+	 * @return
+	 */
+	public static ArrayList<Pedido> PedidosCocina(){
+		Connection miconexion = Connect.getConnection();
+		ArrayList<Pedido> a = null;
+		//se obtiene el id del pedido
+		//sentenia sql
+		String sql = "SELECT p.id, p.id_mesa FROM pedidos p,p_articulo pa,articulos ar WHERE p.id IN (SELECT pa.id_p WHERE pa.estado='no entregado' and pa.id_a in(SELECT ar.id where ar.tipo=1)) GROUP by p.id;";
+
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			ResultSet miRs = sentencia.executeQuery();
+			a = new ArrayList<Pedido>();
+			//mientras tenga resguistros la consulta se añadiran P_Articulos
+			while (miRs.next()) {
+				//se obtiene los datos 
+				int id_p = miRs.getInt(1);
+				int id_mesa = miRs.getInt(2);
+				//se crea el P_Articulo
+				Pedido auxi = new Pedido(id_p,id_mesa);
+				//se añade al arraylist
+				a.add(auxi);
+			}
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+		return a;
 	}
 
 }

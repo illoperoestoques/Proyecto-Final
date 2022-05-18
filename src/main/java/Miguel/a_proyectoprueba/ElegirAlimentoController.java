@@ -53,8 +53,9 @@ public class ElegirAlimentoController implements Initializable {
 	}
 
 	public static void newP_articulo(Articulo art) {
+
 		// se crea P_articulo que queremos insertar
-		P_Articulo p_art = new P_Articulo(pedido, art, 1, 0);
+		P_Articulo p_art = new P_Articulo(pedido, art, 1, "no entregado",PrimaryController.getEmpleado());
 		// se crea un nuevo P_ArticuloDao para insertar un nuevo
 		// P_articulo o actualizar la cantidad de uno
 		// se obtiene todos los P_Articulos que hay con el id del pedido
@@ -73,7 +74,7 @@ public class ElegirAlimentoController implements Initializable {
 			// P_articulo con el articulo que queremos insertar
 			P_ArticuloDao.insert(p_art);
 		}
-
+	
 	}
 
 	@Override

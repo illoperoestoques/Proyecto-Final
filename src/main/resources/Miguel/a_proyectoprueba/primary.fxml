@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Miguel.a_proyectoprueba.PrimaryController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Miguel.a_proyectoprueba.PrimaryController">
    <children>
-      <TextField fx:id="password" layoutX="133.0" layoutY="410.0" onMouseEntered="#logIn" prefHeight="25.0" prefWidth="319.0" />
       <TextField fx:id="user" layoutX="133.0" layoutY="300.0" prefHeight="25.0" prefWidth="319.0" />
       <Label layoutX="135.0" layoutY="236.0" prefHeight="17.0" prefWidth="194.0" text="Usuario:">
          <font>
@@ -41,5 +41,6 @@
             <Font size="31.0" />
          </font>
       </Label>
+      <PasswordField fx:id="password" layoutX="133.0" layoutY="423.0" prefHeight="25.0" prefWidth="319.0" />
    </children>
 </Pane>

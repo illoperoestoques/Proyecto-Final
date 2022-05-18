@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Miguel.a_proyectoprueba.CocineroPedidosController">
+   <children>
+      <TableView fx:id="pedidos" layoutX="174.0" layoutY="41.0" prefHeight="423.0" prefWidth="417.0">
+        <columns>
+          <TableColumn fx:id="id_P" prefWidth="154.0" text="ID" />
+          <TableColumn fx:id="id_Mesa" prefWidth="262.0" text="MESA" />
+        </columns>
+      </TableView>
+      <Button fx:id="back" layoutX="131.0" layoutY="496.0" mnemonicParsing="false" onAction="#switchToBack" prefHeight="45.0" prefWidth="87.0" text="Atras" />
+      <Button fx:id="select" layoutX="548.0" layoutY="496.0" mnemonicParsing="false" onAction="#altertablerow" prefHeight="45.0" prefWidth="87.0" text="Seleccionar" />
+   </children>
+</Pane>

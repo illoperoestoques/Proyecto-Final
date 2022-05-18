@@ -2,15 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Miguel.a_proyectoprueba.PagarCuentaController">
    <children>
-      <Label fx:id="pedido" alignment="TOP_LEFT" layoutX="50.0" layoutY="84.0" prefHeight="400.0" prefWidth="700.0">
-         <font>
-            <Font size="28.0" />
-         </font></Label>
       <Label layoutX="320.0" layoutY="20.0" text="CUENTA">
          <font>
             <Font size="43.0" />
@@ -31,10 +29,19 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="pagar" layoutX="595.0" layoutY="506.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="121.0" text="Pagar">
+      <Button fx:id="confirmar" layoutX="595.0" layoutY="506.0" mnemonicParsing="false" onAction="#pagarCuenta" prefHeight="57.0" prefWidth="121.0" text="Pagar">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <TableView fx:id="pedido" layoutX="27.0" layoutY="106.0" prefHeight="389.0" prefWidth="707.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="105.0" text="ID" />
+          <TableColumn fx:id="nombre" prefWidth="210.0" text="NOMBRE" />
+            <TableColumn fx:id="cantidad" minWidth="0.0" prefWidth="104.0" text="CANTIDAD" />
+            <TableColumn fx:id="precio" minWidth="6.0" prefWidth="118.0" text="PRECIO" />
+            <TableColumn fx:id="empleado" prefWidth="169.0" text="EMPLEADO" />
+        </columns>
+      </TableView>
    </children>
 </Pane>

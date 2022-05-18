@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Model.Articulo;
 import ModelDao.ArticuloDao;
+import interfaces.IBebidasController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public class BebidasController implements Initializable {
+public class BebidasController implements Initializable, IBebidasController {
 
 	@FXML
 	private HBox bebidas;
@@ -32,21 +33,21 @@ public class BebidasController implements Initializable {
 	 * Cundo clikas buttonAtras cambia a la vista de menu
 	 */
 	@FXML
-	private void switchToMenu() throws IOException {
+	public void switchToMenu() throws IOException {
 		App.setRoot("menu");
 	}
 	/**
 	 * Cundo clikas buttonOk cambia a la vista de mesas
 	 */
 	@FXML
-	private void switchToMesas() throws IOException {
+	public void switchToMesas() throws IOException {
 		App.setRoot("mesas");
 	}
 	/**
 	 * Cambia clikas buttonShowMenu cambia la vista de infoPedido
 	 */
 	@FXML
-	private void switchToPedido() throws IOException {
+	public void switchToPedido() throws IOException {
 		App.setRoot("infoPedido");
 	}
 	
@@ -55,7 +56,7 @@ public class BebidasController implements Initializable {
 	 * cada bebida con su nombre.
 	 */
 	@FXML
-	private void mostrarBebidas() {
+	public void mostrarBebidas() {
 		//dbbebidas guarda un arrayList de Articulo con todas las bebidas de la bd
 		ArrayList<Articulo> bdbebidas = ArticuloDao.getBebidas();
 		for (Articulo aux : bdbebidas) {

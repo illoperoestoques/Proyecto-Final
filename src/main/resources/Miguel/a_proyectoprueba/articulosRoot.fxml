@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Miguel.a_proyectoprueba.ArticulosRootController">
+   <children>
+      <TableView fx:id="tb_articulos" layoutX="50.0" layoutY="61.0" prefHeight="400.0" prefWidth="700.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="135.0" text="ID" />
+          <TableColumn fx:id="nombre" prefWidth="248.0" text="NOMBRE" />
+            <TableColumn fx:id="precio" prefWidth="140.0" text="PRECIO" />
+            <TableColumn fx:id="tipo" prefWidth="176.0" text="TIPO" />
+        </columns>
+      </TableView>
+      <Button fx:id="back" layoutX="50.0" layoutY="541.0" mnemonicParsing="false" onAction="#switchToBack" prefHeight="39.0" prefWidth="77.0" text="Back" />
+      <Button fx:id="modificar" layoutX="556.0" layoutY="469.0" mnemonicParsing="false" onAction="#altertablerow" prefHeight="39.0" prefWidth="101.0" text="Modificar" />
+      <Button fx:id="crear" layoutX="171.0" layoutY="469.0" mnemonicParsing="false" onAction="#switchToCrearArticuloRoot" prefHeight="39.0" prefWidth="101.0" text="Crear" />
+   </children>
+</Pane>
