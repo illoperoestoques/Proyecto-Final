@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
+import Utils.Utils;
+
 
 public class P_Articulo {
 	private Pedido pedido;
@@ -109,7 +111,7 @@ public class P_Articulo {
 			//recorre el arraylist
 			for (P_Articulo a : p_art) {
 				//si uno de los articulos son iguales devuelve true 
-				if (a.getArticulo().equals(this.articulo)) {
+				if (a.getArticulo().equals(this.articulo) && a.getEstado().equals(this.getEstado())) {
 					return true;
 				}
 			}
@@ -135,6 +137,21 @@ public class P_Articulo {
 				total+=(price*cantidad);
 			}
 		return total;
+	}
+	
+	public boolean setEstadoSave (String estado) {
+		boolean valid= false;
+		if(this.estado.equals("no entregado")) {
+			valid=true;
+		}else if(this.estado.equals("cocinado") && estado.equals("entregado") || estado.equals("cocinado")) {
+			valid=true;
+		}else if(this.estado.equals("entregado") && estado.equals("entregado")) {
+			valid=true;
+		}
+		if(!valid) {
+			Utils.error("Estado del articulo erroneo", "El estado que esta intentando insertar al articulo no es posible");
+		}
+		return valid;
 	}
 		
 	

@@ -103,10 +103,31 @@ public class CocineroCocinaController implements Initializable, ICocineroCocinaC
 	public void updatePedido() {
 		if( estado_insertar.getValue()!=null) {
 			P_Articulo nuevo = tb_pedido.getSelectionModel().getSelectedItem();
-			
+			nuevo.setEmpleado(PrimaryController.getEmpleado());
 			String estado = estado_insertar.getValue();
-			nuevo.setEstado(estado);			
-			P_ArticuloDao.updateP_Articulo(nuevo);
+			boolean valid=nuevo.setEstadoSave(estado);
+			if(valid==true && nuevo!=null) {
+				//si hay la misma cantidad que la del P_articulo seleccionado devuelve true
+				String vdDrop=P_ArticuloDao.updateP_Articulo1(nuevo,1);
+				if(vdDrop.equals("true")) {
+					//se elina el P_Articulo original
+					P_ArticuloDao.eliminaP_Articulo(nuevo);
+				}else {
+					//se elimina x cantidad al p_articulo seleccionado
+					P_ArticuloDao.calculaCantidad(nuevo, -1, nuevo.getEstado());
+					
+				}
+				//devuelve true si ya hay algun P_Articulo seleccionado con el estado seleccionado
+				String vdCreate=P_ArticuloDao.updateP_Articulo2(nuevo,estado,1);
+				if(vdCreate.equals("true")) {
+					P_ArticuloDao.calculaCantidad(nuevo, 1, estado);
+				}else {
+					nuevo.setEstado(estado);
+					P_ArticuloDao.insert(nuevo);
+				}
+				
+				updateTable();
+			}
 	
 			updateTable();
 		}

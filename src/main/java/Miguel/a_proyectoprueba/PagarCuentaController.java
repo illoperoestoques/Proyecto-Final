@@ -95,6 +95,7 @@ public class PagarCuentaController implements Initializable {
 	private void pagarCuenta() throws IOException {
 		Pedido pedido_Pagar= ElegirAlimentoController.getPedido();
 		P_ArticuloDao.pagarPedido(pedido_Pagar);
+		Utils.Utils.info("Pedido pagado");
 		App.setRoot("mesas");
 	}
 	

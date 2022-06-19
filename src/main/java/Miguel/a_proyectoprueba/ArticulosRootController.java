@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Model.Articulo;
 import ModelDao.ArticuloDao;
+import Utils.Utils;
 import interfaces.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -101,12 +102,17 @@ public class ArticulosRootController implements Initializable, IArticulosRootCon
 	
 	}
 	
-	//coge el objeto de la tabla seleccionada, y cambia de vista a modificaArticuloRoot
+	// coge el objeto de la tabla seleccionada, y cambia de vista a
+	// modificaArticuloRoot
 	@FXML
 	public void altertablerow(ActionEvent event) throws IOException {
-		//la siguiente vista obtiene el articulo seleccionado
-		ModificaArticuloRoot.setArticulo(tb_articulos.getSelectionModel().getSelectedItem());
-		App.setRoot("modificaArticuloRoot");
+		// la siguiente vista obtiene el articulo seleccionado
+		if (tb_articulos.getSelectionModel().getSelectedItem() != null) {
+			ModificaArticuloRoot.setArticulo(tb_articulos.getSelectionModel().getSelectedItem());
+			App.setRoot("modificaArticuloRoot");
+		}else {
+			Utils.error("Articulo no seleccionado", "Selecciona una articulo para modificarlo");
+		}
 	}
 	
 	

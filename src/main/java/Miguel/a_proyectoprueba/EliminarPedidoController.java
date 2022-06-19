@@ -5,6 +5,7 @@ import java.io.IOException;
 import Model.Pedido;
 import ModelDao.P_ArticuloDao;
 import ModelDao.PedidoDao;
+import Utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -30,6 +31,7 @@ public class EliminarPedidoController {
 		//elimina el pedido pasado
 		PedidoDao.eliminaPedido(pedido);
 		//cambia de vista a camareroEleccion
+		Utils.info("Pedido Eliminado");
 		App.setRoot("camareroEleccion");
 	}
 	/**

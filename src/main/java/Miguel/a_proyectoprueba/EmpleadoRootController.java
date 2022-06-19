@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Model.Empleado;
 import ModelDao.EmpleadoDao;
+import Utils.Utils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,9 +85,14 @@ public class EmpleadoRootController implements Initializable {
 	//cambia de vista a modificaEmpleadoRoot
 	@FXML
 	private void altertablerow(ActionEvent event) throws IOException {
+		if(tb_empleados.getSelectionModel().getSelectedItem()!= null) {
 		//pasa el empleado a modificar a la clase controladora de la vista modificaEmpleadoRoot
-		ModificaEmpleadoRoot.setEmpleado(tb_empleados.getSelectionModel().getSelectedItem());
-		App.setRoot("modificaEmpleadoRoot");		
+		PasswordController.setEmpleado(tb_empleados.getSelectionModel().getSelectedItem());
+		App.setRoot("password");	
+		
+		}else {
+			Utils.error("Empleado no seleccionado", "Selecciona un empleado para modificarlo");
+		}
 	}
 	
 	

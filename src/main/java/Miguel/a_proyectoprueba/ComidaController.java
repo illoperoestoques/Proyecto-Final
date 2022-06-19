@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Model.Articulo;
 import ModelDao.ArticuloDao;
+import Utils.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -79,6 +80,9 @@ public class ComidaController implements Initializable {
 			Articulo nuevo = ArticuloDao.get(nombre);
 			//se crea un new P_Articulo
 			ElegirAlimentoController.newP_articulo(nuevo);
+			Utils.info("Se añadio el articulo " + nombre);
+			
+			
 
 		}
 	};

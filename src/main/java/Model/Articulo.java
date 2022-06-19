@@ -79,6 +79,15 @@ public class Articulo implements IArticulo {
 		}
 	return result;
 }
+	
+	public static String tipoComida(int tipo) {
+		if(tipo==1) {
+			return "Comida";
+		}else if(tipo==0) {
+			return "Bebida";
+		}
+		return "nada";
+	}
  
 
 }

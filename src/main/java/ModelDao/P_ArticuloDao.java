@@ -99,7 +99,7 @@ public class P_ArticuloDao {
 		int idp = pedido.getId();
 		int ida = art.getId();
 		//sentencia sql
-		String sql = "UPDATE p_articulo SET cantidad = (SELECT cantidad FROM p_articulo WHERE p_articulo.id_p = ? AND p_articulo.id_a = ?) + 1 WHERE p_articulo.id_p = ? AND p_articulo.id_a = ?";
+		String sql = "UPDATE p_articulo SET cantidad = (SELECT cantidad FROM p_articulo WHERE p_articulo.id_p = ? AND p_articulo.id_a = ? AND  p_articulo.estado = 'no entregado' ) + 1 WHERE p_articulo.id_p = ? AND p_articulo.id_a = ? AND  p_articulo.estado = 'no entregado';";
 
 		try {
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
@@ -116,7 +116,57 @@ public class P_ArticuloDao {
 		} 
 
 	}
+		
+	/**
+	 * suma elnumero pasado a la cantidad original del P_articulo pasado
+	 * @param aux
+	 * @param cantidad
+	 */
+	public static void calculaCantidad(P_Articulo aux, int cantidad, String estado) {
+		Connection miconexion = Connect.getConnection();
+		//sentencia sql
+		String sql = "UPDATE p_articulo SET cantidad = (SELECT cantidad FROM p_articulo WHERE p_articulo.id_p = ? AND p_articulo.id_a = ? AND  p_articulo.estado = ? ) + ? WHERE p_articulo.id_p = ? AND p_articulo.id_a = ? AND  p_articulo.estado = ? ;";
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			//se insertan los valores valores 
+			sentencia.setInt(1, aux.getPedidido().getId());
+			sentencia.setInt(2, aux.getArticulo().getId());
+			sentencia.setString(3, estado);
+			sentencia.setInt(4, cantidad);
+			sentencia.setInt(5, aux.getPedidido().getId());
+			sentencia.setInt(6, aux.getArticulo().getId());
+			sentencia.setString(7, estado);
+			//se actualiza
+			sentencia.executeUpdate();
 
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+
+	}
+	
+	
+	public static void cambiaCantidad(P_Articulo aux, int cantidad, String estado) {
+		Connection miconexion = Connect.getConnection();
+		//sentencia sql
+		String sql = "UPDATE p_articulo SET cantidad = ? WHERE p_articulo.id_p = ? AND p_articulo.id_a = ? AND  p_articulo.estado = ? ;";
+		try {
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			//se insertan los valores valores 
+			sentencia.setInt(1, cantidad);
+			sentencia.setInt(2, aux.getPedidido().getId());
+			sentencia.setInt(3, aux.getArticulo().getId());
+			sentencia.setString(4, estado);
+			//se actualiza
+			sentencia.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+
+	}
+	
+	
 	/**
 	 * Devuelve true o false segun si el pedido esta terminado o no
 	 * @param id_pedido id del pedido que queremos saber si esta acabao o no
@@ -185,30 +235,56 @@ public class P_ArticuloDao {
 		
 	}
 	
-	/**
-	 * actualiza un P_Articulo 
-	 * @param pedido P_Articulo con los nuevos valores a actualizar 
-	 */
-	public static void updateP_Articulo(P_Articulo pedido) {
+	
+	public static String updateP_Articulo1(P_Articulo pedido,int cantidad) {
+		String valid="";
 		Connection miconexion = Connect.getConnection();
 		//sentencia sql
-		String sql = "UPDATE p_articulo SET cantidad = ?, estado = ? where id_p=? and id_a=? ";
+		String sql = "SELECT IF(?= (SELECT cantidad FROM p_articulo WHERE id_p= ? AND id_a= ? AND estado= ?), 'true', 'false');";
 
-		try {
+		try {			
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
-			//se insertan los valores valores 
-			sentencia.setInt(1, pedido.getCantidad());
-			sentencia.setString(2, pedido.getEstado());
-			sentencia.setInt(3, pedido.getPedidido().getId());
-			sentencia.setInt(4, pedido.getArticulo().getId());
-			//se actualiza
+			//se inserta el id
+			sentencia.setInt(1, cantidad);
+			sentencia.setInt(2, pedido.getPedido().getId());
+			sentencia.setInt(3, pedido.getArticulo().getId());
+			sentencia.setString(4, pedido.getEstado());
+			ResultSet miRs = sentencia.executeQuery();
+			miRs.next();
+			//se obtiene el id del pedido y se iguala al int anteriormente creado
+			valid = miRs.getString(1);
 			
-			sentencia.executeUpdate();
-
 		} catch (SQLException e) {
 			// TODO: handle exception
 		} 
+		return valid;
 	}
+	
+	
+	public static String updateP_Articulo2(P_Articulo pedido, String estado,int cantidad) {
+		String valid="";
+		Connection miconexion = Connect.getConnection();
+		//sentencia sql
+		String sql = "SELECT IF(?<= (SELECT cantidad FROM p_articulo WHERE id_p= ? AND id_a= ? AND estado= ?), 'true' , 'false');";
+
+		try {			
+			PreparedStatement sentencia = miconexion.prepareStatement(sql);
+			//se inserta el id
+			sentencia.setInt(1, cantidad);
+			sentencia.setInt(2, pedido.getPedido().getId());
+			sentencia.setInt(3, pedido.getArticulo().getId());
+			sentencia.setString(4, estado);
+			ResultSet miRs = sentencia.executeQuery();
+			miRs.next();
+			//se obtiene el id del pedido y se iguala al int anteriormente creado
+			valid = miRs.getString(1);
+			
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} 
+		return valid;
+	}
+	
 	
 	/**
 	 * elimina el P_Articulo a eliminar 
@@ -217,12 +293,13 @@ public class P_ArticuloDao {
 	public static void eliminaP_Articulo(P_Articulo aux) {
 		Connection miconexion = Connect.getConnection();
 		//se obtiene el id del pedido a eliminar
-		String sql = "DELETE FROM p_articulo where id_p=? and id_a=?";
+		String sql = "DELETE FROM p_articulo where id_p=? and id_a=? and estado= ?";
 		try {
 			PreparedStatement sentencia = miconexion.prepareStatement(sql);
 			// se pasa el id a la sentencia 
 			sentencia.setInt(1, aux.getPedidido().getId());
 			sentencia.setInt(2, aux.getArticulo().getId());
+			sentencia.setString(3, aux.getEstado());
 			//se actualiza
 			sentencia.executeUpdate();
 		} catch (SQLException e) {

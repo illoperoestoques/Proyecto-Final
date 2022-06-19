@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Model.Articulo;
 import ModelDao.ArticuloDao;
+import Utils.Utils;
 import interfaces.IBebidasController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -91,6 +92,7 @@ public class BebidasController implements Initializable, IBebidasController {
 			Articulo nuevo = ArticuloDao.get(nombre);
 			//se crea un nuevo P_articulo con el articulo obtenido
 			ElegirAlimentoController.newP_articulo(nuevo);
+			Utils.info("Se añadio el articulo " + nombre);
 
 		}
 	};

@@ -97,15 +97,33 @@ public class ModificaPedidoController implements Initializable, IModificaPedidoC
 	@FXML
 	public void updatePedido() {
 		if(cantidad_insertar.getText()!=null && estado_insertar.getValue()!=null) {
-			P_Articulo nuevo = pedido.getSelectionModel().getSelectedItem();
+			P_Articulo aux = pedido.getSelectionModel().getSelectedItem();
 			int cantidad=Integer.parseInt(cantidad_insertar.getText());
 			String estado = estado_insertar.getValue();
-			nuevo.setCantidad(cantidad);
-			nuevo.setEstado(estado);
+			boolean validEstado=aux.setEstadoSave(estado);
 			if(cantidad ==0 || cantidad < 0) {
-				P_ArticuloDao.eliminaP_Articulo(nuevo);
-			}else {				
-				P_ArticuloDao.updateP_Articulo(nuevo);
+				P_ArticuloDao.eliminaP_Articulo(aux);
+			}else if(validEstado && cantidad <= aux.getCantidad() && aux!=null ) {	
+				//si hay la misma cantidad que la del P_articulo seleccionado devuelve true
+				String vdDrop=P_ArticuloDao.updateP_Articulo1(aux,cantidad);
+				if(vdDrop.equals("true")) {
+					//se elina el P_Articulo original
+					P_ArticuloDao.eliminaP_Articulo(aux);
+				}else if(!estado.equals(aux.getEstado())) {
+					//se elimina x cantidad al p_articulo seleccionado
+					P_ArticuloDao.calculaCantidad(aux, -cantidad, aux.getEstado());			
+				}else {
+					P_ArticuloDao.cambiaCantidad(aux, cantidad, aux.getEstado());
+				}
+				
+				//devuelve true si ya hay algun P_Articulo seleccionado con el estado seleccionado
+				String vdCreate=P_ArticuloDao.updateP_Articulo2(aux,estado,1);
+				if(vdCreate.equals("true") && !estado.equals(aux.getEstado())) {
+					P_ArticuloDao.calculaCantidad(aux, cantidad, estado);
+				}else if(vdCreate.equals("false")) {
+					aux.setEstado(estado);
+					P_ArticuloDao.insert(aux);
+				}
 			}
 			
 			updateTable();

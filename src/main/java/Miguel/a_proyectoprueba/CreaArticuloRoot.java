@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Controller.ArticuloRoot;
+import Utils.Utils;
+
 import Model.Articulo;
 import ModelDao.ArticuloDao;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 public class CreaArticuloRoot implements Initializable {
@@ -20,7 +24,7 @@ public class CreaArticuloRoot implements Initializable {
 	TextField precio;
 	
 	@FXML
-	TextField tipo;
+	ChoiceBox<String> tipo;
 	
 	@FXML
 	Button cancelar;
@@ -37,20 +41,27 @@ public class CreaArticuloRoot implements Initializable {
 	//crea un articulo a traves de los datos insertados en los campos y cambia de vita a artiulosRoot
 	@FXML void crearArticulo() throws IOException {
 		//se obtiene los datos de los campos
-		int i = Integer.parseInt(precio.getText());
-		int tip = Integer.parseInt(tipo.getText());
 		String nom = nombre.getText(); 
-		//se crea un articulo a traves de los datos
-		Articulo nuevo= new Articulo(0, nom, i, tip);
-		//se inserta en la bd
-		ArticuloDao.insert(nuevo);
-		App.setRoot("articulosRoot");
+		boolean validna= ArticuloRoot.validNombreArtRoot(nom);
+		int pre = ArticuloRoot.ValidPrecioComidaRoot(precio.getText());
+		int tip =ArticuloRoot.ValidTipoComidaRoot(tipo.getValue());
+		boolean valid=ArticuloRoot.validArtRoot(validna, pre, tip);
+		if(valid) {
+			//se crea un articulo a traves de los datos
+			Articulo nuevo= new Articulo(0, nom, pre, tip);
+			//se inserta en la bd
+			ArticuloDao.insert(nuevo);
+			App.setRoot("articulosRoot");
+		}
+		
 	}
 	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-	
+		tipo.setValue("Bebida");
+		tipo.getItems().add("Comida");
+		tipo.getItems().add("Bebida");
 		
 	}
 }

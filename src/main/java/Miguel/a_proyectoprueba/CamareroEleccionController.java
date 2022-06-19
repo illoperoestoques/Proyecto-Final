@@ -9,6 +9,7 @@ import Model.P_Articulo;
 import Model.Pedido;
 import ModelDao.P_ArticuloDao;
 import ModelDao.PedidoDao;
+import Utils.Utils;
 import interfaces.ICamareroEleccionController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -78,11 +79,7 @@ public class CamareroEleccionController implements Initializable, ICamareroElecc
 	@FXML
 	public void switchToPagarCuenta() throws IOException {
 		int id = PedidoDao.getLastId(mesa);
-		boolean finish = P_ArticuloDao.EstadoFinish(id);
-		//si uno de los P_Articulos no ha acabado se pasa el pedido al controlador de ElegirAlimento
-		if (finish == false) {
-			ElegirAlimentoController.setPedido(PedidoDao.get(id));
-		}
+		ElegirAlimentoController.setPedido(PedidoDao.get(id));
 		//se cambia de vista
 		App.setRoot("pagarCuenta");
 	}
@@ -91,11 +88,7 @@ public class CamareroEleccionController implements Initializable, ICamareroElecc
 	@FXML
 	public void switchToModificaPedido() throws IOException {
 		int id = PedidoDao.getLastId(mesa);
-		boolean finish = P_ArticuloDao.EstadoFinish(id);
-		//si uno de los P_Articulos no ha acabado se pasa el pedido al controlador de ElegirAlimento
-		if (finish == false) {
 			ElegirAlimentoController.setPedido(PedidoDao.get(id));
-		}
 		//se cambia de vista a modificaPedido
 		App.setRoot("modificaPedido");
 	}

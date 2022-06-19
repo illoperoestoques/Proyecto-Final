@@ -3,7 +3,8 @@ package Utils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-import Model.Empleado;
+import javafx.scene.control.Alert;
+
 
 public class Utils {
 	/**
@@ -26,21 +27,31 @@ public class Utils {
 		return toReturn;
 	    }
 	
-		/**
-		 * comprueba que el empleado es valido
-		 * @param ob empleado que se quiere saber si es correcto 
-		 * @return
-		 */
-		public static boolean ValidUserRoot(Empleado ob) {
-			//si el usuario y la contraseña tiene mas de 3 caracteres y el trabajo es camarero o cocinero el un usuario correcto
-			String user = ob.getUser();
-			String pass = ob.getPassword();
-			String trabajo= ob.getTrabajo();
-			if(user.length()>3 && pass.length()>3) {
-				if(trabajo.equals("camarero") || trabajo.equals("cocinero") ) {
-					return true;
-				}
-			}
-			return false;
+	public static void error (String header, String context) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText(header);
+		alert.setContentText(context);
+		alert.showAndWait();
+	}
+	
+	public static void info (String header) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setHeaderText(header);
+		alert.show();
 		}
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
 }

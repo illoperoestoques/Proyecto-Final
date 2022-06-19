@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Controller.EmpleadoRoot;
 import Model.Empleado;
 import ModelDao.EmpleadoDao;
 import javafx.fxml.FXML;
@@ -43,8 +44,8 @@ public class ModificaEmpleadoRoot implements Initializable {
 	//se crea un empleado con los datos campos
 	Empleado nuevo = new Empleado(user.getText(), password.getText(), trabajo.getValue());
 	//si el usuario es correcto se inserta y se cambia de vista
-	Boolean valid=Utils.Utils.ValidUserRoot(nuevo);
-		if(valid==true) {
+	Boolean valid=EmpleadoRoot.ValidUserRoot(nuevo);
+		if(valid) {
 			EmpleadoDao.updateEmpleado(nuevo, empleado.getUser(), empleado.getPassword());
 			App.setRoot("empleadoRoot");
 		}
